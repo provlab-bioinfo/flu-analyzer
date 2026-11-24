@@ -104,7 +104,7 @@ The following configuration files provide pipeline-specific parameters:
 
 Review these configurations to ensure that the settings are appropriate for the intended analysis environment.
 
-### Input samplesheet
+### 4. Input samplesheet
 
 The input samplesheet follows the `nf-qcflow` format:
 
@@ -112,21 +112,13 @@ The input samplesheet follows the `nf-qcflow` format:
 sample,fastq_1,fastq_2,fastq_long
 sample1,reads_R1.fastq.gz,reads_R2.fastq.gz,NA
 sample2,NA,NA,reads.fastq.gz
-
+```
 
 ## Usage
 
 ```bash
 bash path_to/run_flu.sh <samplesheet.csv> <results_dir> [options]
 ```
-
-### 3. Configuration
-
-Keep the platform detection out of the environment configuration description. It is handled by `nf-qcflow`, not selected by `flu-analyzer` through an environment-specific platform parameter.
-
-One further detail: the current `nf-qcflow` README documents Kraken2 and Deacon database parameters, and its current workflow uses Deacon for host removal. I would avoid mentioning Hostile as a required database in the `flu-analyzer` README unless your configured version actually uses it. <Cite refs={["turn567400view0"]}/>
-
-This keeps the wrapper README consistent with the current `nf-qcflow` implementation.
 
 ### Arguments
 
