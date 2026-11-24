@@ -36,7 +36,7 @@ flowchart LR
 
     M --> P["Final analysis results"]
 ```
-The workflow consists of four steps:
+The workflow consists of three analysis steps, with run information recorded for each execution:
 
 1. **Read QC (`nf-qcflow`)**
    - Runs read quality control and preprocessing.
@@ -53,13 +53,17 @@ The workflow consists of four steps:
 
 4. **Run information**
    - Records the analysis date, environment, pipeline versions, Nextflow profile, and reference database release.
-
+   - Generated as part of the wrapper execution.
 
 ## Requirements
-The current deployment uses the `nf-core-4` Conda environment, which provides Nextflow >= 25.10.4
-- Linux, Bash, [Nextflow >= 25.10.4](https://www.nextflow.io/), Python3
+
+- Linux and Bash
+- [Nextflow](https://www.nextflow.io/) >= 25.10.4
+- Python 3
 - Access to the `nf-qcflow` and `nf-fluab` pipeline installations
 - Access to the influenza reference database
+
+The current deployment uses the `nf-core-4` Conda environment, which provides the required Nextflow version.
 
 ## Configuration
 
@@ -120,10 +124,11 @@ Review these configurations to ensure that the settings are appropriate for the 
 
 ### Examples
 
-Activate conda env
-```
+Activate the Conda environment:
+
+```bash
 conda activate nf-core-4
-```
+
 Run using the production environment:
 
 ```bash
@@ -143,24 +148,24 @@ Display the version:
 bash path_to/run_flu.sh --version
 ```
 
-## Output structure
 
-The wrapper creates the following output directories:
+### Output structure
+
+Assuming the listed files are all written to `master_report/`, format the tree as:
 
 ```text
 results/
 ├── nf-qcflow/
 ├── nf-fluab/
 ├── master_report/
-│   └── all_consensus.fasta
-│   └── all_consensus-nextclade_ha.long.tsv
-│   └── all_consensus-nextclade_ha_na.short.tsv
-│   └── all_consensus-nextclade_na.long.tsv
+│   ├── all_consensus.fasta
+│   ├── all_consensus-nextclade_ha.long.tsv
+│   ├── all_consensus-nextclade_ha_na.short.tsv
+│   ├── all_consensus-nextclade_na.long.tsv
 │   └── master_report.csv
 ├── logs/
 │   └── pipeline.log
 └── run_info.txt
-```
 
 Additional pipeline outputs are retained in their respective output directories.
 
