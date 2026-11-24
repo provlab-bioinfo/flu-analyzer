@@ -104,7 +104,7 @@ Review these configurations to ensure that the settings are appropriate for the 
 ## Usage
 
 ```bash
-./run_flu.sh <samplesheet.csv> <results_dir> [options]
+bash path_to/run_flu.sh <samplesheet.csv> <results_dir> [options]
 ```
 
 ### Arguments
