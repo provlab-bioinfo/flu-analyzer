@@ -1,0 +1,9 @@
+sample,fastq_1,fastq_2,fastq_long
+sample1,./test_data/fastq/240112_S_I_008_10_S10_L001_R1_001.fastq.gz,./test_data/fastq/240112_S_I_008_10_S10_L001_R2_001.fastq.gz,NA
+sample2,./test_data/fastq/240112_S_I_008_18_S18_L001_R1_001.fastq.gz,./test_data/fastq/240112_S_I_008_18_S18_L001_R2_001.fastq.gz,NA
+sample3_co,./test_data/fastq/230721_S_I_314_87_S87_L001_R1_001.fastq.gz,./test_data/fastq/230721_S_I_314_87_S87_L001_R2_001.fastq.gz,NA
+sample4_co,./test_data/fastq/231222_S_I_390_1_S1_L001_R1_001.fastq.gz,./test_data/fastq/231222_S_I_390_1_S1_L001_R2_001.fastq.gz,NA
+sample5,./test_data/fastq/260820_S_I_040_16_S16_R1.fastq.gz,./test_data/fastq/260820_S_I_040_16_S16_R2.fastq.gz,NA
+sample6,./test_data/fastq/260813_S_I_039_72_S72_R1.fastq.gz,./test_data/fastq/260813_S_I_039_72_S72_R2.fastq.gz,NA
+sample7,NA,NA,./test_data/fastq/240112_S_N_008-barcode10.fastq.gz
+sample8,NA,NA,./test_data/fastq/240112_S_N_008-barcode18.fastq.gz

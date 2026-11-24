@@ -1,0 +1,17 @@
+# Nextflow working files and logs
+.nextflow*
+work/
+
+# Test outputs
+tests/results/
+tests/work/
+tests/.nextflow*
+tests/test_data/fastq/*
+
+# General logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+.DS_Store
