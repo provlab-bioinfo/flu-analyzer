@@ -54,57 +54,12 @@ The workflow consists of four steps:
 4. **Run information**
    - Records the analysis date, environment, pipeline versions, Nextflow profile, and reference database release.
 
-## Repository structure
-
-```text
-flu-analyzer/
-├── build_reference_db.sh
-├── config/
-│   ├── dependencies.config
-│   ├── environments/
-│   │   ├── development.config
-│   │   └── production.config
-│   └── pipelines/
-│       ├── nf-qcflow.config
-│       └── nf-fluab.config
-├── scripts/
-│   └── create_master_report.py
-├── tests/
-│   └── test_data/
-│       ├── fastq/
-│       └── samplesheet.csv
-├── run_flu.sh
-├── VERSION
-└── README.md
-```
 
 ## Requirements
-
-- Linux
-- Bash
-- [Nextflow](https://www.nextflow.io/)
-- Python 3
-- Conda environment containing Nextflow and the required command-line dependencies
+The current deployment uses the `nf-core-4` Conda environment, which provides Nextflow >= 25.10.4
+- Linux, Bash, [Nextflow >= 25.10.4](https://www.nextflow.io/), Python3
 - Access to the `nf-qcflow` and `nf-fluab` pipeline installations
 - Access to the influenza reference database
-- Appropriate compute resources and a configured Nextflow execution profile
-
-The current deployment uses the `nf-core-4` Conda environment, which provides Nextflow.
-
-### Conda environment
-
-Activate the environment before running the wrapper:
-
-```bash
-conda activate nf-core-4
-```
-
-Check that Nextflow and Python are available:
-
-```bash
-nextflow -version
-python3 --version
-```
 
 ## Configuration
 
@@ -165,9 +120,14 @@ Review these configurations to ensure that the settings are appropriate for the 
 
 ### Examples
 
+Activate conda env
+```
+conda activate nf-core-4
+```
 Run using the production environment:
 
 ```bash
+
 ./run_flu.sh samplesheet.csv results/
 ```
 
@@ -183,34 +143,6 @@ Display the version:
 ./run_flu.sh --version
 ```
 
-### Running through Slurm
-
-For Slurm execution, activate the Conda environment in the submission script before calling `run_flu.sh`.
-
-Example:
-
-```bash
-#!/usr/bin/env bash
-#SBATCH --job-name=flu-analyzer
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
-#SBATCH --time=24:00:00
-#SBATCH --output=flu-analyzer_%j.out
-#SBATCH --error=flu-analyzer_%j.err
-
-set -Eeuo pipefail
-
-source /path/to/conda/etc/profile.d/conda.sh
-conda activate nf-core-4
-
-/path/to/flu-analyzer/run_flu.sh \
-    samplesheet.csv \
-    results/ \
-    --env production
-```
-
-Adjust the resource requests and Conda initialization path according to the execution environment.
-
 ## Output structure
 
 The wrapper creates the following output directories:
@@ -218,12 +150,12 @@ The wrapper creates the following output directories:
 ```text
 results/
 ├── nf-qcflow/
-│   └── report/
-│       └── reads.qcreport.csv
 ├── nf-fluab/
-│   └── report/
-│       └── summary_report.csv
 ├── master_report/
+│   └── all_consensus.fasta
+│   └── all_consensus-nextclade_ha.long.tsv
+│   └── all_consensus-nextclade_ha_na.short.tsv
+│   └── all_consensus-nextclade_na.long.tsv
 │   └── master_report.csv
 ├── logs/
 │   └── pipeline.log
