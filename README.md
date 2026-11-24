@@ -128,19 +128,19 @@ Run using the production environment:
 
 ```bash
 
-./run_flu.sh samplesheet.csv results/
+bash path_to/run_flu.sh samplesheet.csv results/
 ```
 
 Run using the development environment:
 
 ```bash
-./run_flu.sh samplesheet.csv results/ --env development
+bash path_to/run_flu.sh samplesheet.csv results/ --env development
 ```
 
 Display the version:
 
 ```bash
-./run_flu.sh --version
+bash path_to/run_flu.sh --version
 ```
 
 ## Output structure
