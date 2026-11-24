@@ -134,7 +134,6 @@ bash path_to/run_flu.sh samplesheet.csv results/
 
 #Run using the development environment:
 bash path_to/run_flu.sh samplesheet.csv results/ --env development
-```
 
 # Display the version:
 bash path_to/run_flu.sh --version
@@ -142,8 +141,6 @@ bash path_to/run_flu.sh --version
 
 
 ### Output structure
-
-Assuming the listed files are all written to `master_report/`, format the tree as:
 
 ```text
 results/
@@ -169,7 +166,7 @@ The consolidated report is generated at:
 results/master_report/master_report.csv
 ```
 
-It combines the influenza analysis summary and read QC information. Samples with multiple influenza subtype/reference results may have multiple corresponding rows in the report.
+It combines the influenza analysis summary and read QC information. Samples sequenced with multiple platforms, with multiple influenza subtype/reference results may have multiple corresponding rows in the report.
 
 ### Run information
 
