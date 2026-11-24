@@ -129,22 +129,14 @@ Activate the Conda environment:
 ```bash
 conda activate nf-core-4
 
-Run using the production environment:
-
-```bash
-
+# Run using the production environment:
 bash path_to/run_flu.sh samplesheet.csv results/
-```
 
-Run using the development environment:
-
-```bash
+#Run using the development environment:
 bash path_to/run_flu.sh samplesheet.csv results/ --env development
 ```
 
-Display the version:
-
-```bash
+# Display the version:
 bash path_to/run_flu.sh --version
 ```
 
