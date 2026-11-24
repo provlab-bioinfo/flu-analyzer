@@ -10,7 +10,32 @@
 The wrapper runs both pipelines sequentially and combines their reports into a consolidated master report.
 
 ## Workflow overview
+```mermaid
+flowchart TD
+    A["Input samplesheet<br/>FASTQ file paths"] --> B["flu-analyzer"]
 
+    C["Configuration<br/>Environment + dependencies<br/>Pipeline configurations"] --> B
+
+    B --> D["Step 1: nf-qcflow"]
+    D --> E["Read QC and preprocessing"]
+    E --> F["QC output samplesheet"]
+
+    F --> G["Step 2: nf-fluab"]
+    H[("Influenza reference database")] --> G
+    G --> I["Influenza sequence analysis"]
+
+    E --> J["Read QC report<br/>reads.qcreport.csv"]
+    I --> K["Influenza summary report<br/>summary_report.csv"]
+
+    J --> L["Step 3: Master report generation"]
+    K --> L
+    L --> M["master_report.csv"]
+
+    B --> N["Run information<br/>run_info.txt"]
+    B --> O["Pipeline log<br/>pipeline.log"]
+
+    M --> P["Final analysis results"]
+```
 The workflow consists of four steps:
 
 1. **Read QC (`nf-qcflow`)**
