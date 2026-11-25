@@ -154,7 +154,7 @@ bash run_flu.sh --version
 
 Reference database generation is managed by the separate [fluab-reference-db](https://github.com/xiaoli-dong/fluab-reference-db) project.
 
-The `build_reference_db.sh` wrapper in `flu-analyzer` selects the development or production reference database project installation and forwards the remaining command-line arguments to its `bin/run_pipeline.sh` launcher.
+The `build_reference_db.sh` wrapper in `flu-analyzer` selects the development or production reference database project installation and forwards the remaining command-line arguments to its `path_to/fluab-reference-db/bin/run_pipeline.sh` launcher.
 
 ### Build using the production environment
 
