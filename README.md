@@ -11,6 +11,7 @@ The wrapper runs both pipelines sequentially and combines their reports into a c
 
 ## Workflow overview
 ```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 350}}}%%
 flowchart TD
     A["Input samplesheet<br/>FASTQ file paths"] --> B["flu-analyzer"]
 
