@@ -150,42 +150,6 @@ bash run_flu.sh --version
 | `-h`, `--help` | Display usage information |
 | `-v`, `--version` | Display launcher version |
 
-## Build the influenza reference database
-
-Reference database generation is managed by the separate [fluab-reference-db](https://github.com/xiaoli-dong/fluab-reference-db) project.
-
-The `build_reference_db.sh` wrapper in `flu-analyzer` selects the development or production reference database project installation and forwards the remaining command-line arguments to its `path_to/fluab-reference-db/bin/run_pipeline.sh` launcher.
-
-### Build using the production environment
-
-```bash
-bash build_reference_db.sh
-```
-
-### Build using the development environment
-
-```bash
-bash build_reference_db.sh --env development
-```
-
-### Pass options to the reference database pipeline
-
-Arguments other than `--env` are passed directly to `fluab-reference-db/bin/run_pipeline.sh`.
-
-For example:
-
-```bash
-bash build_reference_db.sh --env development --outdir /path/to/output --batch 200
-```
-
-Use the reference database project's documentation for the complete list of supported build options.
-
-The reference database project path is configured separately for each environment using `FLUAB_DB_PIPELINE_DIR` in:
-
-- `config/environments/development.config`
-- `config/environments/production.config`
-
-Building or updating the reference database is separate from running `run_flu.sh`. The analysis launcher uses the database path configured for its selected environment.
 
 ## Analysis workflow
 
@@ -278,6 +242,42 @@ Run metadata are written to:
 ```text
 results/run_info.txt
 ```
+## Build the influenza reference database
+
+Reference database generation is managed by the separate [fluab-reference-db](https://github.com/xiaoli-dong/fluab-reference-db) project.
+
+The `build_reference_db.sh` wrapper in `flu-analyzer` selects the development or production reference database project installation and forwards the remaining command-line arguments to its `path_to/fluab-reference-db/bin/run_pipeline.sh` launcher.
+
+### Build using the production environment
+
+```bash
+bash build_reference_db.sh
+```
+
+### Build using the development environment
+
+```bash
+bash build_reference_db.sh --env development
+```
+
+### Pass options to the reference database pipeline
+
+Arguments other than `--env` are passed directly to `fluab-reference-db/bin/run_pipeline.sh`.
+
+For example:
+
+```bash
+bash build_reference_db.sh --env development --outdir /path/to/output --batch 200
+```
+
+Use the reference database project's documentation for the complete list of supported build options.
+
+The reference database project path is configured separately for each environment using `FLUAB_DB_PIPELINE_DIR` in:
+
+- `config/environments/development.config`
+- `config/environments/production.config`
+
+Building or updating the reference database is separate from running `run_flu.sh`. The analysis launcher uses the database path configured for its selected environment.
 
 ## Related repositories
 
