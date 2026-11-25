@@ -15,24 +15,20 @@ The launcher coordinates both workflows, passes the QC-processed samplesheet to 
 %%{init: {"flowchart": {"wrappingWidth": 350}}}%%
 flowchart TB
     A["Input samplesheet"] --> B["flu-analyzer"]
-
     B --> C["nf-qcflow"]
     C --> D["Read QC and preprocessing"]
     D --> E["Processed samplesheet"]
-
     E --> F["nf-fluab"]
     G["Influenza reference database"] --> F
-
     F --> H["Influenza sequence analysis"]
-
     D --> I["Read QC report"]
     H --> J["Influenza summary report"]
-
     I --> K["Master report generation"]
     J --> K
-
     K --> L["Master report CSV"]
 ```
+
+Reference database generation is handled separately by `fluab-reference-db`. The `build_reference_db.sh` wrapper provides an entry point from `flu-analyzer` to that project.
 
 ## Features
 
@@ -44,6 +40,7 @@ flowchart TB
 - Automatic collection of pipeline and reference database versions
 - Nextflow resume support
 - Consolidated master report combining read QC and influenza analysis results
+- Reference database build launcher
 
 ## Repository structure
 
@@ -81,7 +78,7 @@ Pipeline paths, versions, reference database location, execution profile, and en
 
 ## Input
 
-The pipeline accepts a CSV samplesheet compatible with `nf-qcflow`.
+The analysis launcher accepts a CSV samplesheet compatible with `nf-qcflow`.
 
 For example:
 
@@ -109,14 +106,16 @@ The default environment is `production`.
 Configuration is divided into:
 
 - `config/dependencies.config` – pipeline dependencies and shared configuration variables.
-- `config/environments/production.config` – production environment settings.
-- `config/environments/development.config` – development environment settings.
+- `config/environments/production.config` – production environment settings, including the reference database pipeline path.
+- `config/environments/development.config` – development environment settings, including the reference database pipeline path.
 - `config/pipelines/nf-qcflow.config` – `nf-qcflow` configuration.
 - `config/pipelines/nf-fluab.config` – `nf-fluab` configuration.
 
+The reference database project path is configured using `FLUAB_DB_PIPELINE_DIR` in the selected environment configuration.
+
 ## Usage
 
-### Run the pipeline
+### Run the analysis pipeline
 
 ```bash
 bash run_flu.sh samplesheet.csv results/
@@ -151,6 +150,43 @@ bash run_flu.sh --version
 | `-h`, `--help` | Display usage information |
 | `-v`, `--version` | Display launcher version |
 
+## Build the influenza reference database
+
+Reference database generation is managed by the separate [fluab-reference-db](https://github.com/xiaoli-dong/fluab-reference-db) project.
+
+The `build_reference_db.sh` wrapper in `flu-analyzer` selects the development or production reference database project installation and forwards the remaining command-line arguments to its `bin/run_pipeline.sh` launcher.
+
+### Build using the production environment
+
+```bash
+bash build_reference_db.sh
+```
+
+### Build using the development environment
+
+```bash
+bash build_reference_db.sh --env development
+```
+
+### Pass options to the reference database pipeline
+
+Arguments other than `--env` are passed directly to `fluab-reference-db/bin/run_pipeline.sh`.
+
+For example:
+
+```bash
+bash build_reference_db.sh --env development --outdir /path/to/output --batch 200
+```
+
+Use the reference database project's documentation for the complete list of supported build options.
+
+The reference database project path is configured separately for each environment using `FLUAB_DB_PIPELINE_DIR` in:
+
+- `config/environments/development.config`
+- `config/environments/production.config`
+
+Building or updating the reference database is separate from running `run_flu.sh`. The analysis launcher uses the database path configured for its selected environment.
+
 ## Analysis workflow
 
 The launcher executes the following steps:
@@ -181,7 +217,7 @@ The launcher executes the following steps:
 
 ## Output structure
 
-The launcher organizes results into separate directories:
+The analysis launcher organizes results into separate directories:
 
 ```text
 results/
@@ -220,7 +256,7 @@ master_report/master_report.csv
 
 ## Logging and reproducibility
 
-Each execution records:
+Each analysis execution records:
 
 - `flu-analyzer` version
 - `nf-qcflow` version
