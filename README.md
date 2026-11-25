@@ -118,35 +118,6 @@ bash run_flu.sh --version
 | `-h`, `--help` | Display usage information |
 | `-v`, `--version` | Display launcher version |
 
-
-## Analysis workflow
-
-The launcher executes the following steps:
-
-1. **Load configuration**
-   - Load shared dependency settings.
-   - Load the selected development or production environment.
-   - Resolve pipeline installations, versions, and reference database location.
-
-2. **Validate inputs and dependencies**
-   - Check the input samplesheet.
-   - Check pipeline configuration files.
-   - Verify that `nf-qcflow`, `nf-fluab`, and the reference database are available.
-   - Verify that Nextflow and Python 3 are available.
-
-3. **Run nf-qcflow**
-   - Perform read quality control and preprocessing.
-   - Generate QC reports and a processed samplesheet for downstream analysis.
-
-4. **Run nf-fluab**
-   - Use the processed samplesheet from `nf-qcflow`.
-   - Perform influenza A/B sequence analysis using the configured reference database.
-
-5. **Generate master report**
-   - Combine the read QC report and influenza summary report.
-   - Include pipeline version information.
-   - Generate a consolidated CSV report.
-
 ## Output structure
 
 The analysis launcher organizes results into separate directories:
