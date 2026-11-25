@@ -12,6 +12,7 @@ The launcher coordinates both workflows, passes the QC-processed samplesheet to 
 ## Workflow overview
 
 ```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 350}}}%%
 flowchart TB
     A["Input samplesheet"] --> B["flu-analyzer"]
 
