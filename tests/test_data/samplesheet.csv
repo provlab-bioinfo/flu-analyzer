@@ -7,3 +7,4 @@ sample5,./test_data/fastq/260820_S_I_040_16_S16_R1.fastq.gz,./test_data/fastq/26
 sample6,./test_data/fastq/260813_S_I_039_72_S72_R1.fastq.gz,./test_data/fastq/260813_S_I_039_72_S72_R2.fastq.gz,NA
 sample7,NA,NA,./test_data/fastq/240112_S_N_008-barcode10.fastq.gz
 sample8,NA,NA,./test_data/fastq/240112_S_N_008-barcode18.fastq.gz
+sample9,./test_data/fastq/260618_S_I_031-12_S12_L001_R1_001.fastq.gz,./test_data/fastq/260618_S_I_031-12_S12_L001_R2_001.fastq.gz,./test_data/fastq/260611_S_N_030-barcode18.fastq.gz
