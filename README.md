@@ -42,28 +42,6 @@ Reference database generation is handled separately by `fluab-reference-db`. The
 - Consolidated master report combining read QC and influenza analysis results
 - Reference database build launcher
 
-## Repository structure
-
-```text
-flu-analyzer/
-├── config/
-│   ├── environments/
-│   │   ├── development.config
-│   │   └── production.config
-│   ├── pipelines/
-│   │   ├── nf-qcflow.config
-│   │   └── nf-fluab.config
-│   └── dependencies.config
-├── scripts/
-│   └── create_master_report.py
-├── tests/
-│   └── test_data/
-├── VERSION
-├── run_flu.sh
-├── build_reference_db.sh
-└── README.md
-```
-
 ## Requirements
 
 - Linux
