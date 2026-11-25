@@ -93,27 +93,17 @@ The reference database project path is configured using `FLUAB_DB_PIPELINE_DIR` 
 
 ## Usage
 
-### Run the analysis pipeline
-
 ```bash
+# Run the analysis pipeline
 bash run_flu.sh samplesheet.csv results/
-```
 
-### Use the development environment
-
-```bash
+# Use the development environment
 bash run_flu.sh samplesheet.csv results/ --env development
-```
 
-### Display help
-
-```bash
+# Display help
 bash run_flu.sh --help
-```
 
-### Display version
-
-```bash
+# Display version
 bash run_flu.sh --version
 ```
 
