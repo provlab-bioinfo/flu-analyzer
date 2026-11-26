@@ -146,19 +146,95 @@ results/
 | `logs/pipeline.log` | Launcher and pipeline execution log. |
 | `run_info.txt` | Run metadata, pipeline versions, and reference database information. |
 
-### Master report
+## Master report
 
-The master report combines:
+The workflow combines read QC metrics from `nf-qcflow` and influenza analysis results from `nf-fluab` into:
 
-- Read QC results from `nf-qcflow`.
-- Influenza analysis summary results from `nf-fluab`.
-- Pipeline version information.
+`master_report/master_report.csv`
 
-The report is generated as:
+The master report provides a consolidated, sample-level summary of read QC and influenza sequence analysis results.
 
-```text
-master_report/master_report.csv
+Each row represents one sample and one selected influenza subtype/reference. The report supports both Illumina and Nanopore sequencing data. Samples with multiple detected influenza subtypes (coinfections) or sequencing data from multiple platforms can have multiple rows.
+
+### Report contents
+
+The CSV includes the following information:
+
+- **Sample information:** Sample name, sequencing platform and read type.
+- **Read QC metrics:** Input, trimmed and dehosted read counts, total bases, average read lengths and trimming/dehosting percentages.
+- **Reference selection:** Reference subtype index, subtype and predicted type or lineage.
+- **Segment-level results:** Reference sequence ID, segment length, read count, completeness and mean depth for each of the eight influenza genome segments.
+- **Typing and classification:** Segment-specific typing results, percentage identity, query coverage, E-value, clade, proposed subclade, subclade and Nextclade QC status, where applicable.
+- **Genome-level metrics:** Average genome completeness and mean depth.
+- **Version information:** Reference database version and versions of `nf-fluab`, `nf-qcflow` and `flu-analyzer`.
+
+### Example master report
+
+The following example shows actual output from `master_report.csv`, including Nanopore and Illumina samples, influenza A and B subtypes/lineages, coinfections and partial genome recovery.
+
+```csv
+sample,platform,read_type,input_num_reads,input_total_bases,input_avg_len,trimmed_num_reads,trimmed_total_bases,trimmed_avg_len,trimmed_pct,dehosted_num_reads,dehosted_total_bases,dehost
+ed_avg_len,dehosted_pct_of_trimmed,ref_subtype_index,ref_subtype,predicted_type_or_lineage,seg1_id,seg1_length,seg1_numreads,seg1_completeness,seg1_meandepth,seg2_id,seg2_length,seg2_num
+reads,seg2_completeness,seg2_meandepth,seg3_id,seg3_length,seg3_numreads,seg3_completeness,seg3_meandepth,seg4_id,seg4_length,seg4_numreads,seg4_completeness,seg4_meandepth,seg4_typing,s
+eg4_typing_pident,seg4_typing_qcov,seg4_typing_evalue,seg4_clade,seg4_proposedSubclade,seg4_subclade,seg4_nextclade_qc.overallStatus,seg5_id,seg5_length,seg5_numreads,seg5_completeness,s
+eg5_meandepth,seg6_id,seg6_length,seg6_numreads,seg6_completeness,seg6_meandepth,seg6_typing,seg6_typing_pident,seg6_typing_qcov,seg6_typing_evalue,seg6_clade,seg6_proposedSubclade,seg6_
+subclade,seg6_nextclade_qc.overallStatus,seg7_id,seg7_length,seg7_numreads,seg7_completeness,seg7_meandepth,seg7_typing,seg7_typing_pident,seg7_typing_qcov,seg7_typing_evalue,seg8_id,seg
+8_length,seg8_numreads,seg8_completeness,seg8_meandepth,avg_genome_completeness,avg_genome_meandepth,flu_db_ver,nf_fluab_ver,nf_qcflow_ver,flu_analyzer_ver
+sample7,nanopore,single,97445,56658153,581.4,78285,50025973,639.0,80.3,77721,49720999,639.7,99.3,1,H3N2,NA,sample7-seg1|nanopore|H3N2,2280,28293,100.00,2505.36,NA,NA,NA,NA,NA,sample7-seg
+3|nanopore|H3N2,2151,19083,100.00,1734.55,sample7-seg4|nanopore|H3N2,1701,4982,100.00,1681.91,NA,NA,NA,NA,G.1,G.1,G.1,good,sample7-seg5|nanopore|H3N2,1497,3380,100.00,1942.58,sample7-seg
+6|nanopore|H3N2,1410,13589,100.00,2579.3,NA,NA,NA,NA,B,B,NA,good,sample7-seg7|nanopore|H3N2,982,12748,100.00,8440.87,NA,NA,NA,NA,sample7-seg8|nanopore|H3N2,838,11581,100.00,7972.34,87.50
+,3357.11,20261006,2.1.0,1.0.0,1.0.0
+sample8,nanopore,single,75057,49930280,665.2,49934,41241830,825.9,66.5,33680,35099434,1042.1,67.4,1,H1N1,NA,sample8-seg1|nanopore|H1N1,2280,2458,100.00,735.699,sample8-seg2|nanopore|H1N1
+,2274,1006,100.00,346.571,sample8-seg3|nanopore|H1N1,2151,3060,100.00,916.688,sample8-seg4|nanopore|H1N1,1701,2574,100.00,2077.79,NA,NA,NA,NA,D.1,D.1,D.1,good,sample8-seg5|nanopore|H1N1,
+1497,2920,100.00,2045.77,sample8-seg6|nanopore|H1N1,1410,4121,100.00,2923.18,NA,NA,NA,NA,C.5.2,C.5.2,NA,good,sample8-seg7|nanopore|H1N1,982,8864,100.00,7736.28,NA,NA,NA,NA,sample8-seg8|n
+anopore|H1N1,838,9288,100.00,8291.91,100.00,3134.24,20261006,2.1.0,1.0.0,1.0.0
+sample9,nanopore,single,45881,21202463,462.1,33391,15766143,472.2,72.8,593,449055,757.3,1.8,1,H3N2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,
+sample9-seg5|nanopore|H3N2,1497,34,99.93,14.7388,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,sample9-seg7|nanopore|H3N2,982,281,99.90,192.868,NA,NA,NA,NA,sample9-seg8|nanopore|H3N2,838,29,97.
+26,15.4726,37.14,27.88,20261006,2.1.0,1.0.0,1.0.0
+sample1,illumina,paired,134090,40495180,151.0,128391,35465330,138.1,95.7,128257,35427385,138.1,99.9,1,H3N2,NA,sample1-seg1|illumina|H3N2,2280,46219,100.00,2295.15,sample1-seg2|illumina|H
+3N2,2274,14582,99.60,806.926,sample1-seg3|illumina|H3N2,2151,31314,100.00,1738.23,sample1-seg4|illumina|H3N2,1701,21158,100.00,1672.7,NA,NA,NA,NA,G.1,G.1,G.1,good,sample1-seg5|illumina|H
+3N2,1497,22412,100.00,2065.6,sample1-seg6|illumina|H3N2,1410,24160,100.00,2182.63,NA,NA,NA,NA,B,B,NA,good,sample1-seg7|illumina|H3N2,982,44610,100.00,6262.5,NA,NA,NA,NA,sample1-seg8|illu
+mina|H3N2,838,34896,100.00,5622.69,99.95,2830.80,20261006,2.1.0,1.0.0,1.0.0
+sample2,illumina,paired,125935,38032370,151.0,120870,33432356,138.3,96.0,107847,29981765,139.0,89.2,1,H1N1,NA,sample2-seg1|illumina|H1N1,2280,17210,100.00,1015.3,sample2-seg2|illumina|H1
+N1,2274,7575,100.00,459.37,sample2-seg3|illumina|H1N1,2151,17863,100.00,1133.02,sample2-seg4|illumina|H1N1,1701,27721,100.00,2260,NA,NA,NA,NA,D.1,D.1,D.1,good,sample2-seg5|illumina|H1N1,
+1497,27242,100.00,2517.5,sample2-seg6|illumina|H1N1,1410,30113,100.00,2949.75,NA,NA,NA,NA,C.5.2,C.5.2,NA,good,sample2-seg7|illumina|H1N1,982,45069,100.00,6291.53,NA,NA,NA,NA,sample2-seg8
+|illumina|H1N1,838,35290,100.00,5786.93,100.00,2801.68,20261006,2.1.0,1.0.0,1.0.0
+sample3_co,illumina,paired,104619,31594938,151.0,97799,26389082,134.9,93.5,72416,19678938,135.9,74.0,1,H1N1,NA,sample3_co-seg1|illumina|H1N1,2280,1912,100.00,102.775,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,NA,sample3_co-seg4|illumina|H1N1,1701,4022,100.00,325.517,NA,NA,NA,NA,D,D,D,good,NA,NA,NA,NA,NA,sample3_co-seg6|illumina|H1N1,1410,12046,100.00,1145.54,NA,NA,NA,NA,C.5.1.1,C.5.1.1
+,NA,good,sample3_co-seg7|illumina|H1N1,982,64042,96.74,8710.11,NA,NA,NA,NA,sample3_co-seg8|illumina|H1N1,838,8228,100.00,1339.12,62.09,1452.88,20261006,2.1.0,1.0.0,1.0.0
+sample3_co,illumina,paired,104619,31594938,151.0,97799,26389082,134.9,93.5,72416,19678938,135.9,74.0,2,H3N2,NA,sample3_co-seg1|illumina|H3N2,2280,5999,100.00,357.349,sample3_co-seg2|illu
+mina|H3N2,2274,1950,98.33,111.801,sample3_co-seg3|illumina|H3N2,2151,3690,95.03,208.766,sample3_co-seg4|illumina|H3N2,1701,1015,100.00,79.1864,NA,NA,NA,NA,G.2,G.2,G.2,good,sample3_co-seg
+5|illumina|H3N2,1497,2753,98.40,234.614,sample3_co-seg6|illumina|H3N2,1410,1871,100.00,178.174,NA,NA,NA,NA,A.2.2.2,A.2.2.2,NA,good,NA,NA,NA,NA,NA,NA,NA,NA,NA,sample3_co-seg8|illumina|H3N
+2,838,2970,100.00,472.13,86.47,205.25,20261006,2.1.0,1.0.0,1.0.0
+sample4_co,illumina,paired,43748,13211896,151.0,42099,11743802,139.5,96.2,34439,9652545,140.1,81.8,1,H1N1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+,NA,NA,sample4_co-seg5|illumina|H1N1,1497,236,99.27,21.3861,sample4_co-seg6|illumina|H1N1,1410,170,87.16,16.2099,NA,NA,NA,NA,D,D,NA,good,sample4_co-seg7|illumina|H1N1,982,8463,100.00,118
+1.03,NA,NA,NA,NA,sample4_co-seg8|illumina|H1N1,838,3548,100.00,576.085,48.30,224.34,20261006,2.1.0,1.0.0,1.0.0
+sample4_co,illumina,paired,43748,13211896,151.0,42099,11743802,139.5,96.2,34439,9652545,140.1,81.8,2,H3N2,NA,sample4_co-seg1|illumina|H3N2,2280,7739,100.00,449.874,sample4_co-seg2|illumi
+na|H3N2,2277,2128,100.00,130.595,sample4_co-seg3|illumina|H3N2,2151,4626,100.00,286.083,sample4_co-seg4|illumina|H3N2,1701,3214,100.00,260.541,NA,NA,NA,NA,J.2,J.2,J.2,good,sample4_co-seg
+5|illumina|H3N2,1497,5497,100.00,503.661,sample4_co-seg6|illumina|H3N2,1410,4076,100.00,399.837,NA,NA,NA,NA,B.4.2,B.4.2,NA,good,sample4_co-seg7|illumina|H3N2,982,21375,100.00,2986.08,NA,
+NA,NA,NA,sample4_co-seg8|illumina|H3N2,838,5473,100.00,892.498,100.00,738.65,20261006,2.1.0,1.0.0,1.0.0
+sample5,illumina,paired,159503,43541621,136.5,151312,41839813,138.3,94.9,51997,14271962,137.2,34.4,1,Victoria,NA,sample5-seg1|illumina|Victoria,2259,11211,100.00,613.34,sample5-seg2|illu
+mina|Victoria,2313,9731,99.91,483.35,sample5-seg3|illumina|Victoria,2181,2121,99.91,133.408,sample5-seg4|illumina|Victoria,1749,40141,100.00,3025.18,NA,NA,NA,NA,C.5.6.1,C.5.6.1,C.5.6.1,g
+ood,sample5-seg5|illumina|Victoria,1683,4700,100.00,382.608,sample5-seg6|illumina|Victoria,1408,12873,100.00,1218.44,NA,NA,NA,NA,B.8,B.8,NA,good,NA,NA,NA,NA,NA,NA,NA,NA,NA,sample5-seg8|i
+llumina|Victoria,1027,17047,100.00,2269.99,87.48,1015.79,20261006,2.1.0,1.0.0,1.0.0
+sample6,illumina,paired,178814,47445862,132.7,167441,45318269,135.3,93.6,167439,45317715,135.3,100.0,1,Yamagata,NA,sample6-seg1|illumina|Yamagata,2259,25164,99.91,1309.29,sample6-seg2|il
+lumina|Yamagata,2313,35381,95.89,1701.32,sample6-seg3|illumina|Yamagata,2181,4968,100.00,292.572,sample6-seg4|illumina|Yamagata,1755,37402,99.94,2618.51,NA,NA,NA,NA,Y3,NA,NA,good,sample6
+-seg5|illumina|Yamagata,1683,40502,99.94,3292.04,sample6-seg6|illumina|Yamagata,1408,23039,100.00,2056.29,NA,NA,NA,NA,NA,NA,NA,NA,sample6-seg7|illumina|Yamagata,1076,108744,94.80,13431,N
+A,NA,NA,NA,sample6-seg8|illumina|Yamagata,1024,38825,100.00,5147.62,98.81,3731.08,20261006,2.1.0,1.0.0,1.0.0
+sample9,illumina,paired,128722,37030505,143.8,124201,35861368,144.4,96.5,8028,2275122,141.7,6.5,1,H3N2,NA,sample9-seg1|illumina|H3N2,2280,2307,99.96,130.92,NA,NA,NA,NA,NA,sample9-seg3|il
+lumina|H3N2,2178,655,59.83,38.1878,sample9-seg4|illumina|H3N2,1701,415,100.00,35.0253,NA,NA,NA,NA,K,K,K,good,sample9-seg5|illumina|H3N2,1497,570,100.00,54.2705,sample9-seg6|illumina|H3N2
+,1410,499,100.00,49.7085,NA,NA,NA,NA,C,C,NA,good,sample9-seg7|illumina|H3N2,982,9640,100.00,1418.63,NA,NA,NA,NA,sample9-seg8|illumina|H3N2,838,484,99.40,83.9869,82.40,226.34,20261006,2.1
+.0,1.0.0,1.0.0
 ```
+
+In this example:
+
+- Nanopore and Illumina results are included in the same report.
+- `sample3_co` and `sample4_co` each have separate rows for H1N1 and H3N2, representing coinfections.
+- Samples with partial segment recovery are retained, with unavailable segment results represented by `NA`.
+- The same sample name may appear in multiple rows when multiple subtypes or platforms are analyzed.
+
+The report also includes pipeline and reference database version information to support result traceability.
 
 ## Logging and reproducibility
 
