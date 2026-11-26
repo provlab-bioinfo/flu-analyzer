@@ -2,7 +2,7 @@
 
 **Integrated influenza A and B NGS analysis pipeline**
 
-`flu-analyzer` is a workflow launcher that integrates read quality control, preprocessing, and influenza sequence analysis using two Nextflow pipelines:
+`flu-analyzer` is a workflow launcher that integrates read quality control, preprocessing, and influenza sequence analysis using two Nextflow pipelines. It first runs nf-qcflow to perform quality control and preprocessing, then passes the resulting quality-controlled reads to nf-fluab for influenza analysis.
 
 - [nf-qcflow](https://github.com/xiaoli-dong/qcflow) – read quality control and preprocessing.
 - [nf-fluab](https://github.com/xiaoli-dong/nf-fluab) – influenza A and B sequence analysis.
