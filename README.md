@@ -62,6 +62,7 @@ For example:
 sample,fastq_1,fastq_2,fastq_long
 sample01,/data/sample01_R1.fastq.gz,/data/sample01_R2.fastq.gz,NA
 sample02,NA,NA,/data/sample02.fastq.gz
+sample03,/data/sample03_R1.fastq.gz,/data/sample03_R2.fastq.gz,/data/sample03.fastq.gz
 ```
 
 The samplesheet supports Illumina paired-end and Oxford Nanopore long-read data. The `fastq_long` column is used for long-read input.
